@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle2, Phone, ShieldCheck, Clock, Star } from 'lucide-react'
 import './QuotePage.css'
 
@@ -50,14 +49,12 @@ export default function QuotePage() {
       <main className="qp-main">
 
         {/* Left - copy + trust */}
-        <motion.div
-          className="qp-left"
-          initial={{ opacity: 0, x: -24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <p className="qp-eyebrow">Free, no-obligation quote</p>
-          <h1 className="qp-title">Tell us what you need.<br />We'll sort the rest.</h1>
+        <div
+          className="qp-left">
+          <h1 className="qp-title">Expert Bathroom &amp; Wet Room Installers.</h1>
+          <a href="tel:+447734024192" className="qp-call-btn">
+            <Phone size={18} /> Call George on 07734 024192
+          </a>
           <p className="qp-body">
             Bathrooms, wet rooms, tiling, kitchens, carpentry, plastering.
             Fill in the form and we'll get back to you within 24 hours with a fixed price - no hidden extras.
@@ -81,15 +78,11 @@ export default function QuotePage() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Right - form */}
-        <motion.div
-          className="qp-right"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-        >
+        <div
+          className="qp-right">
           <div className="qp-form-card">
             {!formSubmitted ? (
               <>
@@ -152,12 +145,8 @@ export default function QuotePage() {
                 </form>
               </>
             ) : (
-              <motion.div
-                className="qp-success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
-              >
+              <div
+                className="qp-success">
                 <CheckCircle2 size={52} className="qp-success-icon" />
                 <h3>You're all set!</h3>
                 <p>We've received your enquiry and will be in touch within 24 hours to talk through your project and arrange a free survey.</p>
@@ -165,12 +154,12 @@ export default function QuotePage() {
                   className="qp-reset"
                   onClick={() => { setFormSubmitted(false); setFormData({ name: '', email: '', phone: '', town: '', workRequired: '', budget: '', message: '' }) }}
                 >
-                  Submit another enquiry
+                  Send another enquiry
                 </button>
-              </motion.div>
+              </div>
             )}
           </div>
-        </motion.div>
+        </div>
       </main>
 
       <footer className="qp-footer">

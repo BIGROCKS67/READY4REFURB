@@ -95,6 +95,28 @@
   color: #ffffff;
 }
 
+.qp-call-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(63, 184, 224, 0.5);
+  background: rgba(63, 184, 224, 0.12);
+  color: #3FB8E0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.qp-call-btn:hover {
+  background: rgba(63, 184, 224, 0.22);
+  border-color: #3FB8E0;
+  color: #ffffff;
+}
+
 .qp-body {
   font-size: 1rem;
   line-height: 1.7;

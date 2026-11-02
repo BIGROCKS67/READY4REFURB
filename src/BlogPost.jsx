@@ -89,7 +89,7 @@ export default function BlogPost({ slug }) {
         <div className="blog-article-cta">
           <h3>Ready to get started?</h3>
           <p>We cover Towcester, Northampton, Milton Keynes and surrounding areas. Free surveys, fixed-price quotes.</p>
-          <a href={`${BASE}quote`} className="blog-cta-btn">Get a free quote →</a>
+          <a href={`${BASE}quote`} className="blog-cta-btn">Get my free quote</a>
         </div>
       </article>
     </div>

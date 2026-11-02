@@ -19,7 +19,7 @@ export default function BlogPage() {
         <header className="blog-header">
           <p className="blog-label">From the team</p>
           <h1 className="blog-title">Bathroom & renovation advice</h1>
-          <p className="blog-subtitle">Practical guides on costs, materials and choosing the right tradespeople — written by the people who do the work.</p>
+          <p className="blog-subtitle">Guides on costs, materials and choosing tradespeople, written by the people who do the work.</p>
         </header>
 
         <div className="blog-grid">
@@ -31,7 +31,7 @@ export default function BlogPage() {
               </div>
               <h2 className="blog-card-title">{post.title}</h2>
               <p className="blog-card-excerpt">{post.excerpt}</p>
-              <span className="blog-card-link">Read article →</span>
+              <span className="blog-card-link">Read the guide</span>
             </a>
           ))}
         </div>

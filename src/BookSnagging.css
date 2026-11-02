@@ -1,0 +1,345 @@
+.snag-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.snag-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.15rem 0 0.25rem;
+}
+
+.snag-check {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  color: #0d1421;
+  cursor: pointer;
+  user-select: none;
+}
+
+.snag-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #3FB8E0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* iOS date inputs refuse to shrink — keep them inside the card */
+.qp-field {
+  min-width: 0;
+}
+
+.qp-field input[type="date"] {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.snag-dates {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 640px) {
+  .snag-dates {
+    grid-template-columns: 1fr;
+  }
+
+  .qp-form-card {
+    overflow: hidden;
+  }
+}
+
+.snag-steps {
+  margin-top: 0.5rem;
+}
+
+.snag-steps-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.snag-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  position: relative;
+}
+
+.snag-timeline::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: rgba(63, 184, 224, 0.25);
+}
+
+.snag-timeline li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  position: relative;
+}
+
+.snag-step-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(63, 184, 224, 0.12);
+  border: 1px solid rgba(63, 184, 224, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3FB8E0;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.snag-timeline strong {
+  display: block;
+  font-size: 0.9375rem;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.snag-timeline p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 900px) {
+  .snag-main .qp-body {
+    max-width: none;
+  }
+}
+
+/* ── Callback strip ──────────────────────────────── */
+.snag-callback {
+  padding: 0 2rem 3rem;
+}
+
+.snag-callback-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 1.75rem 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(63, 184, 224, 0.25);
+  background: rgba(63, 184, 224, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.snag-callback-copy {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  color: #3FB8E0;
+}
+
+.snag-callback-copy h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.snag-callback-copy p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.snag-callback-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.75rem;
+}
+
+.snag-callback-form input {
+  padding: 0.85rem 1rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.snag-callback-form input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.snag-callback-form input:focus {
+  outline: none;
+  border-color: #3FB8E0;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.snag-callback-form button {
+  padding: 0.85rem 1.4rem;
+  border: none;
+  border-radius: 10px;
+  background: #3FB8E0;
+  color: #0d1421;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.snag-callback-form button:hover:not(:disabled) {
+  background: #55c5e8;
+  transform: translateY(-1px);
+}
+
+.snag-callback-form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.snag-callback-error {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #ff7b7b;
+}
+
+.snag-callback-success {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #3FB8E0;
+}
+
+.snag-callback-success p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 700px) {
+  .snag-callback {
+    padding: 0 1rem 2rem;
+  }
+
+  .snag-callback-inner {
+    padding: 1.35rem 1.1rem;
+  }
+
+  .snag-callback-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Prices, areas and questions: real page copy that search engines and AI tools can read */
+.snag-info {
+  padding: 0 2rem 3rem;
+}
+
+.snag-info-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+}
+
+.snag-info h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin: 2.5rem 0 1rem;
+}
+
+.snag-info h2:first-child {
+  margin-top: 0;
+}
+
+.snag-info p {
+  max-width: 68ch;
+  margin: 0;
+}
+
+.snag-info a {
+  color: #3FB8E0;
+}
+
+.snag-price-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.snag-price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.snag-price-table caption {
+  text-align: left;
+  font-weight: 600;
+  color: #ffffff;
+  padding-bottom: 0.5rem;
+}
+
+.snag-price-table th,
+.snag-price-table td {
+  padding: 0.55rem 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-weight: 400;
+  text-align: left;
+}
+
+.snag-price-table td {
+  text-align: right;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.snag-extras {
+  margin-top: 1rem !important;
+  font-size: 0.9rem;
+}
+
+.snag-faq dt {
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 1.25rem;
+}
+
+.snag-faq dd {
+  margin: 0.35rem 0 0;
+  max-width: 68ch;
+}
+
+@media (max-width: 640px) {
+  .snag-info {
+    padding: 0 1rem 2rem;
+  }
+
+  .snag-price-cols {
+    grid-template-columns: 1fr;
+  }
+}

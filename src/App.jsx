@@ -1,68 +1,89 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import { posts } from './blogPosts'
+import './App.css'
+
 const BASE = import.meta.env.BASE_URL
 const img = (name) => `${BASE}images/${name}`
-import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { useAppStore } from './store/useAppStore'
-import {
-  ArrowRight,
-  Mail,
-  MapPin,
-  Phone,
-  CheckCircle2,
-  Zap,
-  Layers,
-  Droplets,
-  Grid3x3,
-  Wrench,
-  Paintbrush,
-  Bath,
-  Shield,
-  Clock,
-  Star,
-  ChevronRight,
-  Hammer,
-  UtensilsCrossed,
-  Home,
-  Brush,
-  Drill,
-  LayoutDashboard,
-} from 'lucide-react'
-import StatsScene from './StatsScene'
-import { CounterStat } from './components/CounterStat'
-import './App.css'
+const EMPTY_FORM = { name: '', email: '', phone: '', town: '', workRequired: '', budget: '', message: '' }
+
+const workTypes = [
+  { title: 'Full bathrooms', desc: 'Strip-out and refit from floor to ceiling' },
+  { title: 'Wet rooms and walk-in showers', desc: 'Tanked floors and walls, graded to the drain' },
+  { title: 'En suites', desc: 'Small rooms planned to fit a proper shower' },
+  { title: 'Tiling', desc: 'Large format porcelain, stone, metro and herringbone' },
+  { title: 'Plumbing', desc: 'Shower valves, underfloor heating, towel rails and pipework' },
+  { title: 'Supply and fit', desc: 'Sanitaryware, furniture and tiles at trade price' },
+  { title: 'Kitchen fitting', desc: 'Units, worktops and splashbacks' },
+  { title: 'Carpentry and joinery', desc: 'Stud walls, boxing in, fitted furniture, skirting and architrave' },
+  { title: 'Plastering', desc: 'Skims, patching and full replasters, left ready for tiles or paint' },
+  { title: 'Painting and decorating', desc: 'Full rooms and feature walls' },
+  { title: 'New build snagging', desc: 'RPSA-qualified inspections from £325, report within 24 hours', href: `${BASE}book-snagging/` },
+]
+
+const facts = [
+  { value: '100+', label: 'bathrooms fitted and handed over' },
+  { value: '10+ years', label: 'in the trade' },
+  { value: '2 to 3 weeks', label: 'for a typical full bathroom refit' },
+  { value: 'Fixed price', label: 'agreed before we start, with no extras added later' },
+]
+
+const steps = [
+  { title: 'Survey', desc: 'We visit, measure and listen to what you want. No pressure and no hard sell.' },
+  { title: 'Design', desc: 'We plan the layout with you, choose materials and agree the scope and the price.' },
+  { title: 'Supply', desc: 'We buy everything at trade price, so you save on materials without the running around.' },
+  { title: 'Install', desc: 'Our own team fits it, tidies up every day and stays until you have signed it off.' },
+]
+
+const gallery = [
+  { src: 'IMG_4581.jpeg', alt: 'Black marble en suite with lit shelves', large: true },
+  { src: 'IMG_4301.png', alt: 'Walk-in shower in onyx-effect stone' },
+  { src: 'IMG_3767.jpeg', alt: 'Freestanding bath beside a walk-in shower' },
+  { src: 'IMG_3078.jpeg', alt: 'Dark grey en suite' },
+  { src: 'IMG_4531.jpeg', alt: 'Fitted family bathroom' },
+  { src: 'IMG_4072.jpeg', alt: 'Walk-in shower with a recessed niche' },
+  { src: 'IMG_3720.jpeg', alt: 'Cream marble shower enclosure' },
+  { src: 'IMG_4563.jpeg', alt: 'Cloakroom with wall-hung basin' },
+  { src: 'IMG_3410.jpeg', alt: 'Family bathroom with a rainfall shower' },
+  { src: 'IMG_3085.jpeg', alt: 'Close-up of dark grey shower tiling' },
+  { src: 'IMG_3256.jpeg', alt: 'Cloakroom with patterned floor tiles' },
+  { src: 'bath-grey-ensuite.png', alt: 'Grey tiled en suite with walk-in shower' },
+]
+
+// Copied word for word from Google. Keep the customers' own wording.
+const reviews = [
+  {
+    name: 'Andrew Tagg',
+    text: 'So good we decided to have our third en-suite installed within months. George and his team are knowledgeable craftsmen, very tidy, polite, punctual. Could not recommend highly enough.',
+  },
+  {
+    name: 'Roger Frampton',
+    text: 'After a house move I recently had Ready For Refurb take out a bath and replace it with a large, tiled shower. From the very first contact they were professional and helpful throughout. The finished result is excellent and I have received many compliments. Would definitely recommend.',
+  },
+  {
+    name: 'Michelle Mitchell',
+    text: 'Just had Ready for Refurb finish replacing our leaking shower with a brand new one! The guys did a fantastic job, were polite, friendly, kept everything clean and tidy. Work was top notch and of really good quality! Would definitely recommend them!!',
+  },
+  {
+    name: 'Suzanne Halpin',
+    text: "Incredible service from start to finish. I've used Ready For Refurb to renovate a full bungalow also bathrooms and other rooms at my own home. The work is to such a high standard I can't recommend George and the team enough. Wouldn't use anyone else. Perfection along with trustworthy companies are hard to find but this is one.",
+  },
+]
+
+const GOOGLE_REVIEWS = 'https://www.google.com/search?q=Ready+For+Refurb+LTD+reviews'
 
 function App() {
   const [scrolled, setScrolled] = useState(false)
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', town: '', workRequired: '', budget: '', message: '' })
+  const [formData, setFormData] = useState(EMPTY_FORM)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [formLoading, setFormLoading] = useState(false)
   const [formError, setFormError] = useState(false)
-
-  const { setSceneLoaded, setAnimationsReady, setFinished } = useAppStore()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  useEffect(() => {
-    setSceneLoaded()
-    const t1 = setTimeout(() => setAnimationsReady(), 150)
-    const t2 = setTimeout(() => setFinished(), 1000)
-    return () => { clearTimeout(t1); clearTimeout(t2) }
-  }, [])
-
-  const animationsReady = useAppStore((s) => s.animationsReady)
-  useEffect(() => {
-    if (!animationsReady) return
-    const tl = gsap.timeline()
-    tl.fromTo('.hero-title',         { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 1,   ease: 'power3.out' })
-      .fromTo('.hero-cta-wrap',      { opacity: 0, y:  20 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-      .fromTo('.hero-right-headline',{ opacity: 0, x:  40 }, { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out' }, '-=0.9')
-      .fromTo('.hero-right-sub',     { opacity: 0, x:  40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-  }, [animationsReady])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -90,445 +111,292 @@ function App() {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const services = [
-    {
-      number: "01",
-      title: "Full Bathroom Installations",
-      description: "From stripping out the old to fitting the final fixture, we handle every stage of a complete bathroom transformation. One team. One job. No subcontractors left unmanaged."
-    },
-    {
-      number: "02",
-      title: "Wet Rooms & Walk-In Showers",
-      description: "Tanked, tiled, and fitted to the highest waterproofing standards. Whether it's a full wet room or a frameless walk-in enclosure, we make it watertight and stunning."
-    },
-    {
-      number: "03",
-      title: "Tiling",
-      description: "Large-format tiles, feature walls, intricate patterns. Our tilers are skilled in every format - rectified porcelain, natural stone, metro, herringbone. Perfect finish every time."
-    },
-    {
-      number: "04",
-      title: "Plumbing & Supply",
-      description: "Full plumbing work including shower valves, underfloor heating, heated towel rails, and all pipework. We also supply bathroom furniture and sanitaryware at trade prices."
-    },
-    {
-      number: "05",
-      title: "Kitchen Fitting",
-      description: "From full kitchen installations to replacing doors, worktops, and splashbacks. We work with your units or source them for you - measured, fitted, and finished properly."
-    },
-    {
-      number: "06",
-      title: "Carpentry & Joinery",
-      description: "Stud walls, boxing in, fitted furniture, skirting, architrave, and bespoke timber work. Whether it's creating a hidden pipe chase or a built-in vanity unit, we build it right."
-    },
-    {
-      number: "07",
-      title: "Plastering",
-      description: "Smooth finish plaster, dry lining, patching, and full room replasters. We leave walls ready for tiling or decorating - flat, clean, and properly prepared."
-    },
-    {
-      number: "08",
-      title: "General Home Improvements",
-      description: "Odd jobs, home refurbishments, and property makeovers. If it needs doing in your home, chances are we can do it - or we know a trusted trade who can."
-    },
-  ]
-
-  const workTypes = [
-    { icon: Bath,            title: "Full Bathrooms",        desc: "Complete strip-out and full refits from floor to ceiling" },
-    { icon: Droplets,        title: "Wet Rooms",             desc: "Fully tanked and waterproofed wet rooms and walk-in showers" },
-    { icon: Grid3x3,         title: "Tiling",                desc: "Large format, stone, metro, feature walls - any format, any pattern" },
-    { icon: Wrench,          title: "Plumbing",              desc: "Valves, underfloor heating, towel rails, and all pipework" },
-    { icon: Layers,          title: "En Suites",             desc: "Compact en suites designed to maximise every centimetre of space" },
-    { icon: Shield,          title: "Supply & Fit",          desc: "Trade-priced sanitaryware, furniture, and tiles sourced and fitted" },
-    { icon: UtensilsCrossed, title: "Kitchen Fitting",       desc: "Full kitchen installations, worktops, splashbacks, and units" },
-    { icon: Hammer,          title: "Carpentry & Joinery",   desc: "Stud walls, boxing in, fitted furniture, skirting and architrave" },
-    { icon: Brush,           title: "Plastering",            desc: "Full replasters, patching, and skim coats - ready for tiles or paint" },
-    { icon: Home,            title: "Home Improvements",     desc: "Refurbs, odd jobs, and property makeovers done properly" },
-    { icon: Paintbrush,      title: "Painting & Decorating", desc: "Full room redecorates, feature walls, and finishing touches done properly" },
-    { icon: Drill,           title: "Design & Consult",      desc: "We help you plan the space, choose materials, and get it right first time" },
-  ]
-
-  const process = [
-    { n: "01", title: "Survey",  desc: "We visit, measure, and understand exactly what you want. No pressure, no hard sell." },
-    { n: "02", title: "Design",  desc: "We help you plan the layout, choose materials, and agree the full scope and price." },
-    { n: "03", title: "Supply",  desc: "We source everything at trade price. You save on materials without the legwork." },
-    { n: "04", title: "Install", desc: "Our team fits it properly, tidies up daily, and doesn't leave until it's perfect." },
-  ]
-
-  const materials = [
-    "Porcelain", "Natural Stone", "Herringbone", "Metro Tile", "Quartz",
-    "Walk-In Shower", "Freestanding Bath", "Underfloor Heating", "Frameless Glass",
-    "Towel Rail", "Feature Wall", "Wet Room", "Resin Floor", "Large Format",
-    "Kitchen Fitting", "Carpentry", "Plastering", "Joinery", "Home Improvements",
-  ]
-
   return (
     <div className="app">
 
-      {/* Navigation */}
       <nav className={`nav${scrolled ? ' scrolled' : ''}`}>
         <div className="nav-container">
-          <div className="nav-logo">
-            <img src={img('r4r-logo.png')} alt="R4R" className="nav-logo-icon" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} />
+          <a href={BASE} className="nav-logo">
+            <img src={img('r4r-logo.png')} alt="" className="nav-logo-icon" width="36" height="36" style={{ borderRadius: '50%', objectFit: 'cover' }} />
             <span className="nav-logo-text">Ready For Refurb</span>
-          </div>
-          <div style={{ display:'flex', alignItems:'center', gap:'1rem' }}>
-            <a href={`${BASE}blog`} className="nav-blog-link">Advice</a>
-            <a href="#contact" className="nav-cta">Get a Quote</a>
+          </a>
+          <div className="nav-links">
+            <a href={`${BASE}book-snagging/`} className="nav-blog-link">Snagging</a>
+            <a href={`${BASE}blog/`} className="nav-blog-link">Advice</a>
+            <a href="tel:+447734024192" className="nav-blog-link nav-phone">07734 024192</a>
+            <a href="#contact" className="nav-cta">Get a quote</a>
           </div>
         </div>
       </nav>
 
-      {/* ── Hero ──────────────────────────────────────── */}
       <section className="hero hero-split">
-        {/* Three-panel background photos */}
         <div className="hero-split-panel" style={{ backgroundImage: `url(${img('hero-grey-shower.png')})` }} />
         <div className="hero-split-panel" style={{ backgroundImage: `url(${img('hero-kitchen.png')})` }} />
         <div className="hero-split-panel" style={{ backgroundImage: `url(${img('hero-led-mirror.png')})` }} />
         <div className="hero-split-overlay" />
-        {/* Bottom-left — headline + CTA */}
         <div className="hero-left">
-          <h1 className="hero-title">Are<br />you<br /><span style={{ color: '#3FB8E0' }}>R4R?</span></h1>
+          <p className="hero-title" aria-hidden="true">Are<br />you<br /><span style={{ color: '#3FB8E0' }}>R4R?</span></p>
+          <h1 className="hero-tagline">Bathroom fitters in Towcester, Northampton and Milton Keynes</h1>
           <div className="hero-cta-wrap">
-            <a href="#contact" className="hero-cta">Get a Free Quote <ArrowRight size={18} /></a>
+            <a href="#contact" className="hero-cta">Get my free quote <ArrowRight size={18} /></a>
           </div>
         </div>
-        {/* Bottom-right — secondary message */}
         <div className="hero-right">
-          <p className="hero-right-headline">We don't just<br />do bathrooms.</p>
-          <p className="hero-right-sub">Kitchens, carpentry,<br />plastering, tiling —<br />whatever it needs.</p>
+          <p className="hero-right-headline">Kitchens, tiling, plastering and carpentry too.</p>
+          <p className="hero-right-sub">One team for the whole job, at a fixed price.</p>
         </div>
       </section>
 
-      {/* ── Google Reviews Strip ─────────────────────── */}
-      <a
-        href="#reviews"
-        className="google-strip"
-      >
-        {/* Google G */}
+      <a href={GOOGLE_REVIEWS} target="_blank" rel="noopener noreferrer" className="google-strip">
         <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
           <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
           <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
           <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          <path fill="none" d="M0 0h48v48H0z"/>
         </svg>
-        <span className="google-stars">★★★★★</span>
+        <span className="google-stars" aria-hidden="true">★★★★★</span>
         <span className="google-score">5.0</span>
-        <span className="google-divider">·</span>
+        <span className="google-divider" aria-hidden="true">·</span>
         <span className="google-count">15 Google reviews</span>
-        <span className="google-cta">Read reviews →</span>
+        <span className="google-cta">Read them on Google</span>
       </a>
 
-      {/* ── Materials Ticker ──────────────────────────── */}
-      <div className="ticker-wrap">
-        <div className="ticker-track">
-          {[...materials, ...materials].map((m, i) => (
-            <span key={i} className="ticker-item">{m}</span>
-          ))}
-        </div>
-      </div>
+      <a href={`${BASE}book-snagging/`} className="snag-strip">
+        <span className="snag-strip-text">
+          <strong>Buying a new build?</strong> Book a snagging inspection with an RPSA-qualified inspector, from £325.
+        </span>
+        <span className="snag-strip-cta">Book an inspection</span>
+      </a>
 
-      {/* ── Work Types ────────────────────────────────── */}
       <section className="use-cases">
         <div className="use-cases-container">
-          <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p className="section-label">What we do</p>
-            <h2 className="section-title">Bathrooms and Home Improvement</h2>
-          </motion.div>
-          <div className="use-cases-grid">
-            {workTypes.map((u, i) => (
-              <motion.div key={i} className="use-case-card" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.07 }}>
-                <div className="use-case-icon">
-                  <u.icon size={22} strokeWidth={1.5} />
-                </div>
-                <h3 className="use-case-title">{u.title}</h3>
-                <p className="use-case-desc">{u.desc}</p>
-              </motion.div>
-            ))}
+          <div className="section-header">
+            <h2 className="section-title">What we fit</h2>
           </div>
+          <ul className="use-cases-grid">
+            {workTypes.map((u) => {
+              const Tag = u.href ? 'a' : 'div'
+              return (
+                <li key={u.title} className={u.href ? 'use-case-wide' : undefined}>
+                  <Tag href={u.href} className={`use-case-card${u.href ? ' use-case-card--link' : ''}`}>
+                    <h3 className="use-case-title">{u.title}</h3>
+                    <p className="use-case-desc">{u.desc}</p>
+                  </Tag>
+                </li>
+              )
+            })}
+          </ul>
         </div>
       </section>
 
-      {/* ── Stats ─────────────────────────────────────── */}
-      <section className="stats">
-        <StatsScene />
-        <div className="stats-container">
-          {[
-            { value: "100+", label: "Bathrooms installed and handed over on time" },
-            { value: "10+",  label: "Years of trade experience in bathroom fitting" },
-            { value: "5★",   label: "Average customer rating across all reviews" },
-            { value: "2-3wk", label: "Typical install time for a full bathroom refit" },
-            { value: "100%", label: "Fully managed - one team, no loose contractors" },
-            { value: "0",    label: "Hidden costs. Every quote is fixed-price upfront" },
-          ].map((s, i) => (
-            <motion.div key={i} className="stat-item" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.08 }}>
-              <CounterStat value={s.value} label={s.label} />
-              <div className="stat-label">{s.label}</div>
-            </motion.div>
+      <section className="stats" aria-label="Ready For Refurb in numbers">
+        <dl className="stats-container">
+          {facts.map((f) => (
+            <div key={f.value} className="stat-item">
+              <dt className="stat-value">{f.value}</dt>
+              <dd className="stat-label">{f.label}</dd>
+            </div>
           ))}
-        </div>
+        </dl>
       </section>
 
-      {/* ── Process ───────────────────────────────────── */}
       <section className="process">
         <div className="process-container">
-          <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p className="section-label">How we work</p>
-            <h2 className="section-title">From idea to installed</h2>
-          </motion.div>
-          <div className="process-grid">
-            {process.map((p, i) => (
-              <motion.div key={i} className="process-card" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-                <div className="process-number">{p.n}</div>
+          <div className="section-header">
+            <h2 className="section-title">How a job runs</h2>
+          </div>
+          <ol className="process-grid">
+            {steps.map((p, i) => (
+              <li key={p.title} className="process-card">
+                <div className="process-number">{i + 1}</div>
                 <h3 className="process-title">{p.title}</h3>
                 <p className="process-desc">{p.desc}</p>
-              </motion.div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      {/* ── CTA Band ──────────────────────────────────── */}
       <section className="cta-band">
         <div className="cta-band-container">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <h2 className="cta-band-title">Ready for a bathroom<br />you'll love?</h2>
-            <p className="cta-band-sub">Fixed pricing. No hidden costs. Tidy, respectful team on every job.</p>
-            <a href="#contact" className="cta-band-btn">Get a free quote <ArrowRight size={18} /></a>
-          </motion.div>
+          <h2 className="cta-band-title">Get a fixed price for your bathroom</h2>
+          <p className="cta-band-sub">We survey for free, then give you one price with no extras added later.</p>
+          <a href="#contact" className="cta-band-btn">Get my free quote</a>
         </div>
       </section>
 
-      {/* ── Gallery ───────────────────────────────────── */}
       <section id="gallery" className="gallery">
         <div className="gallery-container">
-          <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p className="section-label">Our work</p>
-            <h2 className="section-title">Recent projects</h2>
-          </motion.div>
+          <div className="section-header">
+            <h2 className="section-title">Recent bathrooms we have fitted</h2>
+          </div>
           <div className="gallery-grid">
-            {[
-              { src: img('IMG_4581.jpeg'), alt: 'Luxury black marble ensuite with LED shelves', large: true },
-              { src: img('IMG_4301.png'),  alt: 'Onyx stone walk-in shower' },
-              { src: img('IMG_3767.jpeg'), alt: 'Freestanding bath and walk-in shower' },
-              { src: img('IMG_3078.jpeg'), alt: 'Modern dark grey ensuite' },
-              { src: img('IMG_4531.jpeg'), alt: 'Contemporary fitted family bathroom' },
-              { src: img('IMG_4072.jpeg'), alt: 'Walk-in shower with recessed niche' },
-              { src: img('IMG_3720.jpeg'), alt: 'Cream marble shower enclosure' },
-              { src: img('IMG_4563.jpeg'), alt: 'Modern cloakroom' },
-              { src: img('IMG_3410.jpeg'), alt: 'Family bathroom with rainfall shower' },
-              { src: img('IMG_3085.jpeg'), alt: 'Dark grey shower detail' },
-              { src: img('IMG_3256.jpeg'), alt: 'Powder room with patterned floor tiles' },
-              { src: img('bath-grey-ensuite.png'), alt: 'Grey tiled en suite with walk-in shower' },
-            ].map((img, i) => (
-              <motion.div
-                key={i}
-                className={`gallery-item${img.large ? ' gallery-item--large' : ''}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: (i % 4) * 0.08 }}
-              >
-                <img src={img.src} alt={img.alt} loading="lazy" />
-              </motion.div>
+            {gallery.map((g) => (
+              <div key={g.src} className={`gallery-item${g.large ? ' gallery-item--large' : ''}`}>
+                <img src={img(g.src)} alt={g.alt} loading="lazy" />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Testimonials ──────────────────────────────── */}
       <section id="reviews" className="scenarios">
         <div className="scenarios-container">
-          <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p className="section-label">What customers say</p>
-            <h2 className="section-title">Straight from the source</h2>
-            <a href="https://www.google.com/search?q=Ready+For+Refurb+LTD+reviews" target="_blank" rel="noopener noreferrer" className="google-reviews-link">
-              ★★★★★ <strong>5.0</strong> · 15 Google reviews — See all
+          <div className="section-header">
+            <h2 className="section-title">What customers say on Google</h2>
+            <a href={GOOGLE_REVIEWS} target="_blank" rel="noopener noreferrer" className="google-reviews-link">
+              <strong>5.0</strong> from 15 Google reviews. Read them all on Google
             </a>
-          </motion.div>
+          </div>
           <div className="scenarios-grid">
-            {[
-              {
-                name: "Goaty McGoatface",
-                when: "4 months ago",
-                text: "George and Kieran worked tirelessly for nearly 3 weeks to transform our bathroom from a 30 year old tired one to a stunning modern one. You cannot fault these guys and their attention to detail is amazing. I would not hesitate to recommend them or use them again.",
-              },
-              {
-                name: "Jack Rockell",
-                when: "3 months ago",
-                text: "Ready For Refurb absolutely lived up to their name. From day one they were on time, professional and easy to deal with. No messing around, no vague answers — just clear communication and proper graft. What really stood out was their eye for detail. They picked up little things I wouldn't even have noticed and just quietly sorted them. Edges, finishes, alignment — all the small touches that make the final result look premium. Great company, great people, and I'm honestly so happy with how everything's turned out. Would 100% recommend.",
-              },
-              {
-                name: "Andrew Tagg",
-                when: "5 months ago",
-                text: "So good we decided to have our third en-suite installed within months. George and his team are knowledgeable craftsmen, very tidy, polite, punctual. Could not recommend highly enough.",
-              },
-              {
-                name: "Roger Frampton",
-                when: "2 months ago",
-                text: "After a house move I recently had Ready For Refurb take out a bath and replace it with a large, tiled shower. From the very first contact they were professional and helpful throughout. The finished result is excellent and I have received many compliments. Would definitely recommend.",
-              },
-              {
-                name: "Michelle Mitchell",
-                when: "1 month ago",
-                text: "Just had Ready for Refurb finish replacing our leaking shower with a brand new one! The guys did a fantastic job, were polite, friendly, kept everything clean and tidy. Work was top notch and of really good quality! Would definitely recommend them!!",
-              },
-              {
-                name: "Suzanne Halpin",
-                when: "5 months ago",
-                text: "Incredible service from start to finish. I've used Ready For Refurb to renovate a full bungalow also bathrooms and other rooms at my own home. The work is to such a high standard I can't recommend George and the team enough. Wouldn't use anyone else. Perfection along with trustworthy companies are hard to find but this is one.",
-              },
-            ].map((r, i) => (
-              <motion.div key={i} className="scenario-card review-card" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-                <div className="review-stars">★★★★★</div>
-                <p className="review-text">"{r.text}"</p>
-                <div className="review-footer">
+            {reviews.map((r) => (
+              <figure key={r.name} className="scenario-card review-card">
+                <div className="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                <blockquote className="review-text">{r.text}</blockquote>
+                <figcaption className="review-footer">
                   <span className="review-name">{r.name}</span>
-                  <span className="review-when">{r.when} · Google</span>
-                </div>
-              </motion.div>
+                  <span className="review-when">Google review</span>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Blog Teaser ───────────────────────────────── */}
       <section className="blog-teaser">
         <div className="blog-teaser-container">
-          <motion.div className="section-header" initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.6 }}>
-            <p className="section-label">From the team</p>
+          <div className="section-header">
             <h2 className="section-title">Renovation advice</h2>
-            <p className="section-subtitle">Practical guides on costs, materials and hiring the right people.</p>
-          </motion.div>
-          <div className="blog-teaser-grid blog-teaser-grid--single">
-            {[
-              { title: 'How Much Does a Bathroom Renovation Cost in Northamptonshire?', slug: 'bathroom-renovation-cost-northamptonshire', cat: 'Costs & Budgeting' },
-            ].map((p, i) => (
-              <motion.a key={i} href={`${BASE}blog/${p.slug}`} className="blog-teaser-card" initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.5, delay: i*0.1 }}>
-                <span className="blog-teaser-cat">{p.cat}</span>
-                <h3 className="blog-teaser-title">{p.title}</h3>
-                <span className="blog-teaser-link">Read →</span>
-              </motion.a>
-            ))}
+            <p className="section-subtitle">What a bathroom costs in Northamptonshire, wet room or walk-in shower, and how to pick a fitter.</p>
           </div>
-          <div style={{ textAlign:'center', marginTop:'2.5rem' }}>
-            <a href={`${BASE}blog`} className="blog-teaser-all">View all articles →</a>
+          <div className="blog-teaser-grid">
+            {posts.map((p) => (
+              <a key={p.slug} href={`${BASE}blog/${p.slug}/`} className="blog-teaser-card">
+                <span className="blog-teaser-cat">{p.category}</span>
+                <h3 className="blog-teaser-title">{p.title}</h3>
+                <span className="blog-teaser-link">Read the guide</span>
+              </a>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── Contact ───────────────────────────────────── */}
       <section id="contact" className="contact">
         <div className="contact-container">
-          <motion.div className="contact-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p className="section-label" style={{ color: '#888' }}>Contact</p>
+          <div className="contact-header">
             <h2 className="contact-title">Get a free quote</h2>
-            <p className="contact-subtitle">Tell us what you're after and we'll get back to you within 24 hours.</p>
-          </motion.div>
+            <p className="contact-subtitle">Tell us about the job and we will come back to you within 24 hours.</p>
+          </div>
           <div className="contact-content">
-            <motion.div className="contact-info" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <div className="contact-item">
-                <Phone size={20} />
-                <a href="tel:+441234567890">Call us directly</a>
-              </div>
-              <div className="contact-item">
-                <Mail size={20} />
-                <a href="mailto:ready4refurb@gmail.com">ready4refurb@gmail.com</a>
-              </div>
-              <div className="contact-item">
-                <MapPin size={20} />
-                <span>Northamptonshire, Buckinghamshire & more</span>
-              </div>
-              <div className="contact-turnaround">
-                <Clock size={16} />
-                We respond within 24 hours
-              </div>
-              <div className="contact-reassurance">
-                <div className="reassurance-item"><ChevronRight size={14} /> Free no-obligation survey</div>
-                <div className="reassurance-item"><ChevronRight size={14} /> Fixed-price quote - no extras</div>
-                <div className="reassurance-item"><ChevronRight size={14} /> Fully insured tradespeople</div>
-              </div>
-            </motion.div>
-            <motion.div className="contact-form-container" initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <div className="contact-info">
+              <p className="contact-item"><a href="tel:+447734024192">Call George on 07734 024192</a></p>
+              <p className="contact-item"><a href="mailto:ready4refurb@gmail.com">ready4refurb@gmail.com</a></p>
+              <p className="contact-item">Based in Towcester. We cover Northamptonshire, Buckinghamshire and Oxfordshire.</p>
+              <ul className="contact-reassurance">
+                <li className="reassurance-item">Free survey with no obligation</li>
+                <li className="reassurance-item">Fixed-price quote with no extras</li>
+                <li className="reassurance-item">Fully insured</li>
+              </ul>
+            </div>
+            <div className="contact-form-container">
               {!formSubmitted ? (
                 <form className="contact-form" onSubmit={handleSubmit}>
                   <div className="form-row">
                     <div className="form-group">
-                      <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Full name" />
+                      <label className="form-label" htmlFor="q-name">Full name</label>
+                      <input id="q-name" type="text" name="name" autoComplete="name" value={formData.name} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="Phone number" />
+                      <label className="form-label" htmlFor="q-phone">Phone number</label>
+                      <input id="q-phone" type="tel" name="phone" autoComplete="tel" value={formData.phone} onChange={handleChange} required />
                     </div>
                   </div>
                   <div className="form-row">
                     <div className="form-group">
-                      <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="Email address" />
+                      <label className="form-label" htmlFor="q-email">Email</label>
+                      <input id="q-email" type="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                      <input type="text" name="town" value={formData.town} onChange={handleChange} required placeholder="Town / City" />
+                      <label className="form-label" htmlFor="q-town">Town</label>
+                      <input id="q-town" type="text" name="town" autoComplete="address-level2" value={formData.town} onChange={handleChange} required />
                     </div>
                   </div>
                   <div className="form-group">
-                    <select name="workRequired" value={formData.workRequired} onChange={handleChange} required className={formData.workRequired ? '' : 'select-placeholder'}>
-                      <option value="" disabled>Work required - select your project</option>
+                    <label className="form-label" htmlFor="q-work">What do you need doing?</label>
+                    <select id="q-work" name="workRequired" value={formData.workRequired} onChange={handleChange} required className={formData.workRequired ? '' : 'select-placeholder'}>
+                      <option value="" disabled>Choose a job</option>
                       <option value="Full bathroom installation">Full bathroom installation</option>
-                      <option value="Wet room / walk-in shower">Wet room / walk-in shower</option>
+                      <option value="Wet room / walk-in shower">Wet room or walk-in shower</option>
                       <option value="En suite">En suite</option>
-                      <option value="Bathroom refurbishment">Bathroom refurbishment (refresh existing)</option>
+                      <option value="Bathroom refurbishment">Refresh an existing bathroom</option>
                       <option value="Tiling only">Tiling only</option>
                       <option value="Plumbing only">Plumbing only</option>
                       <option value="Kitchen fitting">Kitchen fitting</option>
-                      <option value="Carpentry / joinery">Carpentry / joinery</option>
+                      <option value="Carpentry / joinery">Carpentry or joinery</option>
                       <option value="Plastering">Plastering</option>
-                      <option value="General home improvement">General home improvement</option>
-                      <option value="Multiple / not sure">Multiple works / not sure yet</option>
+                      <option value="General home improvement">Other home improvement</option>
+                      <option value="Multiple / not sure">Several jobs, or not sure yet</option>
                     </select>
                   </div>
                   <div className="form-group">
-                    <select name="budget" value={formData.budget} onChange={handleChange} required className={formData.budget ? '' : 'select-placeholder'}>
-                      <option value="" disabled>Budget - what are you looking to spend?</option>
+                    <label className="form-label" htmlFor="q-budget">Rough budget</label>
+                    <select id="q-budget" name="budget" value={formData.budget} onChange={handleChange} required className={formData.budget ? '' : 'select-placeholder'}>
+                      <option value="" disabled>Choose a range</option>
                       <option value="Under £3,000">Under £3,000</option>
-                      <option value="£3,000 – £5,000">£3,000 – £5,000</option>
-                      <option value="£5,000 – £8,000">£5,000 – £8,000</option>
-                      <option value="£8,000 – £12,000">£8,000 – £12,000</option>
-                      <option value="£12,000 – £20,000">£12,000 – £20,000</option>
-                      <option value="£20,000+">£20,000+</option>
-                      <option value="Not sure yet">Not sure yet - happy to discuss</option>
+                      <option value="£3,000 to £5,000">£3,000 to £5,000</option>
+                      <option value="£5,000 to £8,000">£5,000 to £8,000</option>
+                      <option value="£8,000 to £12,000">£8,000 to £12,000</option>
+                      <option value="£12,000 to £20,000">£12,000 to £20,000</option>
+                      <option value="£20,000+">Over £20,000</option>
+                      <option value="Not sure yet">Not sure yet</option>
                     </select>
                   </div>
                   <div className="form-group">
-                    <textarea name="message" value={formData.message} onChange={handleChange} rows="4" placeholder="Anything else? Size of room, timescales, specific ideas - the more detail the better" />
+                    <label className="form-label" htmlFor="q-message">Anything else? (optional)</label>
+                    <textarea id="q-message" name="message" value={formData.message} onChange={handleChange} rows="4" placeholder="Room size, when you want it done, ideas you have" />
                   </div>
                   <button type="submit" className="form-submit" disabled={formLoading}>
-                    {formLoading ? 'Sending…' : <><span>Get My Free Quote</span> <ArrowRight size={18} /></>}
+                    {formLoading ? 'Sending…' : 'Get my free quote'}
                   </button>
                   {formError && (
-                    <p className="form-error">Something went wrong. Please email <a href="mailto:ready4refurb@gmail.com">ready4refurb@gmail.com</a></p>
+                    <p className="form-error" role="alert">Your enquiry did not send. Call George on <a href="tel:+447734024192">07734 024192</a> or email <a href="mailto:ready4refurb@gmail.com">ready4refurb@gmail.com</a>.</p>
                   )}
                 </form>
               ) : (
-                <motion.div className="form-success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}>
+                <div className="form-success" role="status">
                   <CheckCircle2 size={48} />
                   <h3>Enquiry received</h3>
-                  <p>We'll get back to you within 24 hours to arrange your free survey.</p>
-                  <button onClick={() => { setFormSubmitted(false); setFormData({ name: '', email: '', phone: '', town: '', workRequired: '', budget: '', message: '' }) }} className="form-reset">
-                    Send another message
+                  <p>We will get back to you within 24 hours to arrange your free survey.</p>
+                  <button onClick={() => { setFormSubmitted(false); setFormData(EMPTY_FORM) }} className="form-reset">
+                    Send another enquiry
                   </button>
-                </motion.div>
+                </div>
               )}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-container">
-          <div className="footer-logo">Ready For Refurb</div>
-          <p className="footer-text">© 2026 Ready For Refurb. Fitted properly. Every time.</p>
+          <div>
+            <div className="footer-logo">Ready For Refurb</div>
+            <p className="footer-text">
+              Ready For Refurb LTD, registered in England and Wales, company number 16343003.
+              Registered office: Chandos House, School Lane, Buckingham MK18 1HD.
+            </p>
+          </div>
+          <p className="footer-text footer-links">
+            <a href={`${BASE}privacy/`}>Privacy and cookies</a>
+            <button type="button" className="footer-cookie-btn" onClick={() => window.r4rCookieSettings?.()}>Cookie settings</button>
+          </p>
         </div>
       </footer>
+
+      <div className="mobile-bar">
+        <a href="tel:+447734024192">Call George</a>
+        <a href="#contact">Get a quote</a>
+      </div>
 
     </div>
   )
