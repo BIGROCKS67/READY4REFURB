@@ -157,7 +157,7 @@ function App() {
         <span className="google-stars" aria-hidden="true">★★★★★</span>
         <span className="google-score">5.0</span>
         <span className="google-divider" aria-hidden="true">·</span>
-        <span className="google-count">15 Google reviews</span>
+        <span className="google-count">23 Google reviews</span>
         <span className="google-cta">Read them on Google</span>
       </a>
 
@@ -245,7 +245,7 @@ function App() {
           <div className="section-header">
             <h2 className="section-title">What customers say on Google</h2>
             <a href={GOOGLE_REVIEWS} target="_blank" rel="noopener noreferrer" className="google-reviews-link">
-              <strong>5.0</strong> from 15 Google reviews. Read them all on Google
+              <strong>5.0</strong> from 23 Google reviews. Read them all on Google
             </a>
           </div>
           <div className="scenarios-grid">
