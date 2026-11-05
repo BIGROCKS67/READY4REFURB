@@ -51,7 +51,7 @@ const pages = [
   },
   {
     path: '/book-snagging/',
-    title: 'New Build Snagging Inspection Towcester, Northampton & Milton Keynes | Ready For Refurb',
+    title: 'New build snagging inspections, Towcester | Ready For Refurb',
     description: 'Book an independent new build snagging inspection in Towcester, Northampton or Milton Keynes. RPSA-qualified inspector, fixed prices from £325, report within 24 hours.',
     schema: {
       '@context': 'https://schema.org',
@@ -73,14 +73,22 @@ const pages = [
 <p>Pre and post completion: 1 to 2 bed apartment £575, 1 to 2 bed house £625, 3 bed house £650, 3 bed detached £675, 4 bed house £685, 5 bed house £700, 5 bed+ house £750.</p>
 <p>Add a drone roof inspection for £75 or a thermal imaging check for £50.</p>
 <h2>Areas we cover</h2>
-<p>Based in Towcester, we inspect new builds in Northampton, Milton Keynes and across Northamptonshire, Buckinghamshire and Oxfordshire. Call George on <a href="tel:+447734024192">07734 024192</a>.</p>
+<p>Based in Towcester, we inspect new builds in Northampton, Milton Keynes and across Northamptonshire, Buckinghamshire and Oxfordshire. New build sites in our area include:</p>
+<ul><li>Towcester: Towcester Grange (Barratt), The Watlings (David Wilson Homes), The Farriers (Charles Church), The Green (Lovell) and The Furlongs (Persimmon)</li><li>Northampton: Dallington Grange, Harlestone Grange, Buckton Fields and Overstone</li><li>Milton Keynes: Brooklands and the other new build sites across Milton Keynes</li></ul>
+<p>Not sure if we cover your development? Call George on <a href="tel:+447734024192">07734 024192</a>.</p>
 <h2>Common questions</h2>
 <h3>What is the difference between pre completion and post completion?</h3>
 <p>A pre completion inspection happens before you legally complete, so the builder can put snags right before you move in. A post completion inspection happens after you have the keys, while the builder is still responsible for fixing defects.</p>
 <h3>Who does the inspection?</h3>
 <p>An independent RPSA-qualified inspector who works for you, not the builder.</p>
 <h3>When do I get my report?</h3>
-<p>Your digital report arrives within 24 hours of the inspection, ready to send to your builder.</p>`,
+<p>Your digital report arrives within 24 hours of the inspection, ready to send to your builder.</p>
+<h3>How much does a snagging inspection cost?</h3>
+<p>A pre completion inspection costs from £325 for a 1 to 2 bed apartment to £550 for a 5 bed+ house. Booking both inspections costs from £575 to £750.</p>
+<h3>When should I book?</h3>
+<p>Book a pre completion inspection as soon as you have your completion date, so the builder has time to put snags right before you move in.</p>
+<h3>I have already moved in. Is it too late?</h3>
+<p>No. Book a post completion inspection. Most new build warranties, such as NHBC Buildmark, make the builder responsible for fixing defects reported in the first two years, so book within that time.</p>`,
   },
   {
     path: '/quote/',

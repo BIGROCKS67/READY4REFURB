@@ -412,8 +412,18 @@ export default function BookSnagging() {
           <h2>Areas we cover</h2>
           <p>
             Based in Towcester, we inspect new builds in Northampton, Milton Keynes and across
-            Northamptonshire, Buckinghamshire and Oxfordshire. Not sure if we cover your development?
-            Call George on <a href="tel:+447734024192">07734 024192</a>.
+            Northamptonshire, Buckinghamshire and Oxfordshire. New build sites in our area include:
+          </p>
+          <dl className="snag-faq">
+            <dt>Towcester</dt>
+            <dd>Towcester Grange (Barratt), The Watlings (David Wilson Homes), The Farriers (Charles Church), The Green (Lovell) and The Furlongs (Persimmon).</dd>
+            <dt>Northampton</dt>
+            <dd>Dallington Grange, Harlestone Grange, Buckton Fields and Overstone.</dd>
+            <dt>Milton Keynes</dt>
+            <dd>Brooklands and the other new build sites across Milton Keynes.</dd>
+          </dl>
+          <p className="snag-extras">
+            Not sure if we cover your development? Call George on <a href="tel:+447734024192">07734 024192</a>.
           </p>
 
           <h2>Common questions</h2>
@@ -428,6 +438,23 @@ export default function BookSnagging() {
             <dd>An independent RPSA-qualified inspector who works for you, not the builder.</dd>
             <dt>When do I get my report?</dt>
             <dd>Your digital report arrives within 24 hours of the inspection, ready to send to your builder.</dd>
+            <dt>How much does a snagging inspection cost?</dt>
+            <dd>
+              A pre completion inspection costs from £325 for a 1 to 2 bed apartment to £550 for a 5 bed+
+              house. Booking both inspections costs from £575 to £750. Every home size is in the price
+              table above.
+            </dd>
+            <dt>When should I book?</dt>
+            <dd>
+              Book a pre completion inspection as soon as you have your completion date, so the builder
+              has time to put snags right before you move in.
+            </dd>
+            <dt>I have already moved in. Is it too late?</dt>
+            <dd>
+              No. Book a post completion inspection. Most new build warranties, such as NHBC Buildmark,
+              make the builder responsible for fixing defects reported in the first two years, so book
+              within that time.
+            </dd>
           </dl>
         </div>
       </section>
