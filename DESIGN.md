@@ -21,10 +21,11 @@ blue #3FB8E0 from the R4R logo, real job photos, "Are you R4R?" as the owner's m
 ## Known gaps (not fixed)
 - Brand face is the system stack / Inter (rule 4). Changing type is a brand decision for George.
 - No opening hours or street address shown (service-area business); add hours if George wants.
-- Review count checked against Google on 5 Nov 2026 (23 reviews, 5.0) and updated on the site. "Fully insured" is still George's claim; not checked against a certificate.
+- Review count checked against Google on 5 Nov 2026 (23 reviews, 5.0) and updated on the site. "Fully insured" confirmed by Jack with Connor on 5 Nov 2026 (certificate not seen).
 - Blog headings are still Title Case.
-- Quote form goes to info@battleplanmedia.co.uk; confirm with George and Connor.
+- Quote form goes to info@battleplanmedia.co.uk; Jack confirmed with Connor on 5 Nov 2026 that this is correct.
 - Not tested: real form submissions end to end, Lighthouse, VoiceOver.
+- Google review link for customers: https://g.page/r/CfhOlSrMjnhzEBM/review (capital O, lowercase l).
 
 ## Local search pass, 5 Nov 2026
 - No separate town pages for snagging (UI_RULES 13.1: no cloned town pages without a real local job,
