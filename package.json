@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist && node scripts/indexnow.mjs"
   },
   "homepage": "https://eagleaibot.github.io/READY4REFURB",
   "dependencies": {
